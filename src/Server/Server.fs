@@ -17,7 +17,7 @@ let storageAccount = tryGetEnv "STORAGE_CONNECTIONSTRING" |> Option.defaultValue
 
 let port = "SERVER_PORT" |> tryGetEnv |> Option.map uint16 |> Option.defaultValue 8085us
 
-let getInitCounter() : Task<Counter> = task { return { Value = 42 } }
+let getInitCounter() : Task<Counter> = task { return { Value = 26 } }
 
 let webApp = router {
     get "/api/init" (fun next ctx ->
