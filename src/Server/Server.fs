@@ -1,3 +1,4 @@
+open System
 open System.IO
 open System.Threading.Tasks
 
@@ -7,14 +8,14 @@ open FSharp.Control.Tasks.V2
 open Giraffe
 open Saturn
 open Shared
-
+open Database
 open Microsoft.WindowsAzure.Storage
 
 let tryGetEnv = System.Environment.GetEnvironmentVariable >> function null | "" -> None | x -> Some x
 
 let publicPath = tryGetEnv "public_path" |> Option.defaultValue "../Client/public" |> Path.GetFullPath
 let storageAccount = tryGetEnv "STORAGE_CONNECTIONSTRING" |> Option.defaultValue "UseDevelopmentStorage=true" |> CloudStorageAccount.Parse
-
+let connectionString = tryGetEnv "DB_CONNECTIONSTRING" |> Option.defaultValue "mongodb://localhost:27017"
 let port = "SERVER_PORT" |> tryGetEnv |> Option.map uint16 |> Option.defaultValue 8085us
 
 let getInitCounter() : Task<Counter> = task { return { Value = 26 } }
@@ -25,6 +26,9 @@ let webApp = router {
             let! counter = getInitCounter()
             return! json counter next ctx
         })
+    get "/api/test" (fun next ctx ->
+        let res = createTask connectionString { Specification="Do this soon"; Target=DateTime.Today.AddDays(1.0); Completed = None;  }
+        json res next ctx )
 }
 
 let configureSerialization (services:IServiceCollection) =

@@ -6,7 +6,11 @@
     </PropertyGroup>
     <ItemGroup>
         <Compile Include="..\Shared\Shared.fs" />
+        <Compile Include="Database.fs" />
         <Compile Include="Server.fs" />
+    </ItemGroup>
+    <ItemGroup>
+      <PackageReference Include="MongoDB.Driver" Version="2.7.3" />
     </ItemGroup>
     <Import Project="..\..\.paket\Paket.Restore.targets" />
 </Project>
