@@ -14,10 +14,10 @@
     },
     "variables": {
         "environment": "[toLower(parameters('environment'))]",
-        "prefix": "[concat('PingPing-', variables('environment'))]",
+        "prefix": "[concat('DingDing-', variables('environment'))]",
         "appServicePlan": "[concat(variables('prefix'), '-web-host')]",
         "web": "[concat(variables('prefix'), '-web')]",
-        "storage": "[concat('pingping', variables('environment'), 'storage')]",
+        "storage": "[concat('dingding', variables('environment'), 'storage')]",
         "insights": "[concat(variables('prefix'), '-insights')]"
     },
     "resources": [
