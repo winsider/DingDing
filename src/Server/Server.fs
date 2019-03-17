@@ -7,6 +7,7 @@ open Microsoft.Extensions.DependencyInjection
 open FSharp.Control.Tasks.V2
 open Giraffe
 open Saturn
+open Saturn.ControllerHelpers
 open Shared
 open Database
 open Microsoft.WindowsAzure.Storage
@@ -20,15 +21,39 @@ let port = "SERVER_PORT" |> tryGetEnv |> Option.map uint16 |> Option.defaultValu
 
 let getInitCounter() : Task<Counter> = task { return { Value = 26 } }
 
+let postTask ctx = task {
+    let! t = Controller.getJson<Task> ctx
+    return createTask connectionString t
+}
+
+let putTask ctx id = task {
+    let! t = Controller.getJson<Task> ctx
+    // todo: check id is correct
+    return updateTask connectionString t
+}
+
+let deleteTask ctx id = task {
+    return deleteTask connectionString id
+}
+
+let getTask ctx id = task {
+    return retrieveTask connectionString id
+}
+
+let taskController = controller {
+    show getTask
+    create postTask
+    update putTask
+    delete deleteTask
+}
+
 let webApp = router {
     get "/api/init" (fun next ctx ->
         task {
             let! counter = getInitCounter()
             return! json counter next ctx
         })
-    get "/api/test" (fun next ctx ->
-        let res = createTask connectionString { Specification="Do this soon"; Target=DateTime.Today.AddDays(1.0); Completed = None;  }
-        json res next ctx )
+    forward "/api/task" taskController
 }
 
 let configureSerialization (services:IServiceCollection) =
