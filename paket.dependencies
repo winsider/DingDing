@@ -37,3 +37,7 @@ group Build
     nuget Fake.IO.Zip
     github CompositionalIT/fshelpers src/FsHelpers/ArmHelper/ArmHelper.fs
 
+group Tools
+    source https://api.nuget.org/v3/index.json
+    framework: auto-detect
+    clitool dotnet-saturn

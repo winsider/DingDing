@@ -7,3 +7,5 @@ group Client
     Fulma
     Fable.FontAwesome.Free
 
+group Tools
+    dotnet-saturn

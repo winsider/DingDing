@@ -4,3 +4,6 @@ group Server
     Microsoft.ApplicationInsights.AspNetCore
     WindowsAzure.Storage
     Thoth.Json.Giraffe
+
+group Tools
+    dotnet-saturn
